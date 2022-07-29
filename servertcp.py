@@ -85,7 +85,7 @@ def allfilesdependetes():
     except FileExistsError:
         pass
 
-def sistemadesyargv():
+def sistemas_de_argv():
     try:
         if sys.argv[1]         ==   r'/start':
             createlogstatus('SERVIDOR CARREGADO NA MEMÓRIA')
@@ -119,7 +119,10 @@ def sistemadesyargv():
         print('inicie novamente o app')
         exit()
 
-sistemadesyargv()
+
+
+
+sistemas_de_argv()
 allfilesdependetes()
 
 listconfig          =   readifconfig()    
