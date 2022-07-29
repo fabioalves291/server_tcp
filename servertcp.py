@@ -134,7 +134,8 @@ localhost           =   (ipserver, port)
 try:
     server.bind(localhost)
 except OSError:
-    print('erro na porta e ip que vc digitou')
+    print('!erro na porta e ip que vc digitou!')
+    print('sugestão de ip:localhost, 0.0.0.0 ou seu ip')
     os.remove('.ifconfig')
     exit()
 
