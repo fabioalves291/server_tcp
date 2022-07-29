@@ -69,60 +69,58 @@ def createlogstatus(data):
     file.write(str(history) + '\n')
     file.close()
 
+def allfilesdependetes():
+    try:
+        file            =   open('.ifconfig','r')
+    except FileNotFoundError:    
+        print('arquivo ".ifconfig" inexistente')
+        print('criando arquivo')
+        createconfigfile()
+    try:
+        os.mkdir('server_files')
+    except FileExistsError:
+        pass
+    try:
+        os.mkdir('log_clients')
+    except FileExistsError:
+        pass
 
-
-
-
-
-try:
-    os.mkdir('log_clients')
-except FileExistsError:
-    pass
-
-
-try:
-    if sys.argv[1]         ==   r'/start':
-        createlogstatus('SERVIDOR CARREGADO NA MEMÓRIA')
-        print('primeiro acesso deve ser em primeiro plano para a configuração de ifconfig')
-    elif sys.argv[1]       ==   r'/stop':
-        createlogstatus('SERVIDOR REMOVIDO NA MEMÓRIA')
-        listconfig          =   readifconfig()    
-        port                =   int(listconfig[1])
-        os.system(f'fuser -n tcp {port} > portid')
-        file                =   open('portid','r')
-        process             =   file.read()
-        process             =   str(process).replace(' ', '')
-        os.system(f'kill -9 {process}')
+def sistemadesyargv():
+    try:
+        if sys.argv[1]         ==   r'/start':
+            createlogstatus('SERVIDOR CARREGADO NA MEMÓRIA')
+            print('primeiro acesso deve ser em primeiro plano para a configuração de ifconfig')
+        elif sys.argv[1]       ==   r'/stop':
+            createlogstatus('SERVIDOR REMOVIDO NA MEMÓRIA')
+            listconfig          =   readifconfig()    
+            port                =   int(listconfig[1])
+            os.system(f'fuser -n tcp {port} > portid')
+            file                =   open('portid','r')
+            process             =   file.read()
+            process             =   str(process).replace(' ', '')
+            os.system(f'kill -9 {process}')
         # print(f'processo {process} interrompido que estava utilizando a porta {port}  ')
-        os.remove('portid')
-        exit()
-    elif sys.argv[1]       ==   r'/help':
-        print('nome_aplicação_servidor.py < /start | /stop | /help >')
-        exit()
-    else:
+            os.remove('portid')
+            exit()
+        elif sys.argv[1]       ==   r'/help':
+            print('nome_aplicação_servidor.py < /start | /stop | /help >')
+            print('o primeiro acesso dever sem em primeiro plano para configuraro server')
+            exit()
+        else:
+            print('nome_aplicação_servidor.py < /help >')
+            print('o primeiro acesso dever sem em primeiro plano para configuração')
+            exit()
+    except IndexError:
         print('nome_aplicação_servidor.py < /help >')
         exit()
-except IndexError:
-    print('nome_aplicação_servidor.py < /help >')
-    exit()
+    except FileNotFoundError:
+        print('arquivos depentes inexistentes')
+        allfilesdependetes()
+        print('inicie novamente o app')
+        exit()
 
-
-
-
-
-
-#lendo arquivo .ifconfig e tratando caso o arquivo nao exista
-try:
-    file            =   open('.ifconfig','r')
-except FileNotFoundError:    
-    print('arquivo ".ifconfig" inexistente')
-    print('criando arquivo')
-    createconfigfile()
-try:
-    os.mkdir('server_files')
-except FileExistsError:
-    pass
-
+sistemadesyargv()
+allfilesdependetes()
 
 listconfig          =   readifconfig()    
 ipserver            =   str(listconfig[0]) 
@@ -178,10 +176,10 @@ while 1:
             server.close()
             exit()
         else:
-            conn.send('opção invalida'.encode(encodingdefault))
+            conn.send('opção inválida'.encode(encodingdefault))
     else:
         try:
-            conn.send(r'opção invalida./h   help'.encode(encodingdefault))
+            conn.send(r'opção inválida./h   help'.encode(encodingdefault))
         except BrokenPipeError:
             print(addr,'erro 32')
     conn.close()
