@@ -129,16 +129,14 @@ ipserver            =   str(listconfig[0])
 port                =   int(listconfig[1])
 buffersize          =   int(listconfig[2])
 encodingdefault     =   str(listconfig[3])
-print(listconfig)
 server              =   socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 localhost           =   (ipserver, port)
-print(localhost)
-#try:
-server.bind(localhost)
-#finally:
-#    print('erro na porta e ip que vc digitou')
-#    os.remove('.ifconfig')
-#    exit()
+try:
+    server.bind(localhost)
+except OSError:
+    print('erro na porta e ip que vc digitou')
+    os.remove('.ifconfig')
+    exit()
 
 server.listen(50)
 while 1:
