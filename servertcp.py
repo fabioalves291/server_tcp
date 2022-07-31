@@ -5,6 +5,7 @@ import os
 import sys
 import socket
 import datetime
+import time
 
 # criar arquivo ifconfig
 def createconfigfile():
@@ -101,22 +102,27 @@ def sistemas_de_argv():
             os.system(f'kill -9 {process}')
         # print(f'processo {process} interrompido que estava utilizando a porta {port}  ')
             os.remove('portid')
+            time.spleep(3.5)
             exit()
         elif sys.argv[1]       ==   r'/help':
             print('nome_aplicação_servidor.py < /start | /stop | /help >')
             print('o primeiro acesso dever sem em primeiro plano para configuraro server')
+            time.sleep(3.5)
             exit()
         else:
             print('nome_aplicação_servidor.py < /help >')
             print('o primeiro acesso dever sem em primeiro plano para configuração')
+            time.sleep(3.5)
             exit()
     except IndexError:
         print('nome_aplicação_servidor.py < /help >')
+        time.sleep(3.5)
         exit()
     except FileNotFoundError:
         print('arquivos depentes inexistentes')
         allfilesdependetes()
         print('inicie novamente o app')
+        time.sleep(3.5)
         exit()
 
 
