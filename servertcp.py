@@ -101,6 +101,7 @@ def sistemas_de_argv():
             process             =   file.read()
             process             =   str(process).replace(' ', '')
             os.system(f'kill -9 {process}')
+            file.close()
         # print(f'processo {process} interrompido que estava utilizando a porta {port}  ')
             os.remove('portid.txt')
             time.sleep(3.5)
