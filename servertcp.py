@@ -6,6 +6,7 @@ import sys
 import socket
 import datetime
 import time
+import threading
 
 # criar arquivo ifconfig
 def createconfigfile():
@@ -149,6 +150,8 @@ except OSError:
 server.listen(50)
 while 1:
     conn, addr      =   server.accept()
+    if conn:
+        threading.Thread().start()
     data            =   conn.recv(buffersize)
     data            =   data.decode(encodingdefault)
     createlog()
