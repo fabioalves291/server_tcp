@@ -91,7 +91,7 @@ def sistemas_de_argv():
     try:
         if sys.argv[1]         ==   r'/start':
             createlogstatus('SERVIDOR CARREGADO NA MEMÓRIA')
-            print('primeiro acesso deve ser em primeiro plano para a configuração de ifconfig')
+            print('primeiro acesso deve ser em primeiro plano para a configuração de ifconfig se estiver configurado ignore esta mensagem')
         elif sys.argv[1]       ==   r'/stop':
             createlogstatus('SERVIDOR REMOVIDO NA MEMÓRIA')
             listconfig          =   readifconfig()    
@@ -108,7 +108,7 @@ def sistemas_de_argv():
             exit()
         elif sys.argv[1]       ==   r'/help':
             print('nome_aplicação_servidor.py < /start | /stop | /help >')
-            print('o primeiro acesso dever sem em primeiro plano para configuraro server se estiver configurado ignore esta mensagem')
+            print('o primeiro acesso dever sem em primeiro plano para configurar o server')
             time.sleep(3.5)
             exit()
         else:
