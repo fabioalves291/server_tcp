@@ -108,7 +108,7 @@ def sistemas_de_argv():
             exit()
         elif sys.argv[1]       ==   r'/help':
             print('nome_aplicação_servidor.py < /start | /stop | /help >')
-            print('o primeiro acesso dever sem em primeiro plano para configuraro server')
+            print('o primeiro acesso dever sem em primeiro plano para configuraro server se estiver configurado ignore esta mensagem')
             time.sleep(3.5)
             exit()
         else:
