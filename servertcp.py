@@ -96,21 +96,24 @@ def sistemas_de_argv():
             createlogstatus('SERVIDOR REMOVIDO NA MEMÓRIA')
             listconfig          =   readifconfig()    
             port                =   int(listconfig[1])
-            try:
-                os.system(f'fuser -n tcp {port} > portid.txt')
-            finally:
+            WindowsLinux        =   input('digite 1 para windows ou 2 para linux:')
+            if WindowsLinux == '1':
                 os.system(f'netstat -a -n -o | findstr {port} > portid.txt')
+            elif WindowsLinux == '2':
+                os.system(f'fuser -n tcp {port} > portid.txt')
             file                =   open('portid.txt','r')
             process             =   file.read()
             process             =   process[-6:]
-            print(process)
             process             =   str(process).replace(' ', '')
-            try:
-                os.system(f'kill -9 {process}')
-            finally:
+            if WindowsLinux == '1':
                 os.system(f'Taskkill /f /PID {process} ')
+            elif WindowsLinux == '2':
+                os.system(f'kill -9 {process}')
+            else:
+                print('opção invalida')
+                exit()
             file.close()
-        # print(f'processo {process} interrompido que estava utilizando a porta {port}  ')
+        # print(f'processo {process} interrompido que estava utilizando a porta {port}  ')          
             os.remove('portid.txt')
             time.sleep(3.5)
             exit()
