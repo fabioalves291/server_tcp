@@ -8,6 +8,4 @@ varios serves em portas diferentes mas o client so conectará de acordo com ifco
 
 !No cmd do windows use    : python3 servertcp (argv) ou python servertcp (argv)
 
-o argv /stop so funciona no linux porque utilizei os comandos do linux fuser e kill.
-
 !No terml do linux use    : python3 servertcp (argv) ou python servertcp (argv) ou ./servertcp (argv)
