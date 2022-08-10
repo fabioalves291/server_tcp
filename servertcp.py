@@ -42,9 +42,9 @@ def menu():
     return msgmenu
 
 # listar arquivos
-def datalist():
+def datalist(self):
     totallist       =   str()
-    filelist        =   os.listdir('server_files')
+    filelist        =   os.listdir(self)
     for file in filelist:
         file        =   str(file)
         wordspace   =   ((48-len(file))*' ')
@@ -174,7 +174,10 @@ while 1:
     if      data        == r'/h':
         conn.sendall(menu().encode(encodingdefault))
     elif    data        == r'/f':
-        conn.sendall(str(datalist()).encode(encodingdefault))
+        conn.sendall(str(datalist('server_files')).encode(encodingdefault))
+    elif    data        == r'/ff':
+        pass
+        conn.sendall(str(datalist('client_files').encode(encodingdefault))
     elif    data        == r'/m':
         file        =   open(f'log_clients/{date}','r')
         conn.send(file.read().encode(encodingdefault))
