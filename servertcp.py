@@ -176,8 +176,7 @@ while 1:
     elif    data        == r'/f':
         conn.sendall(str(datalist('server_files')).encode(encodingdefault))
     elif    data        == r'/ff':
-        pass
-        conn.sendall(str(datalist('client_files').encode(encodingdefault))
+        conn.sendall(str(datalist('client_files')).encode(encodingdefault))
     elif    data        == r'/m':
         file        =   open(f'log_clients/{date}','r')
         conn.send(file.read().encode(encodingdefault))
