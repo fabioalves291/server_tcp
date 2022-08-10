@@ -86,6 +86,10 @@ def allfilesdependetes():
         os.mkdir('log_clients')
     except FileExistsError:
         pass
+    try:
+        os.mkdir('server_files')
+    except FileExistsError:
+        pass
 
 def sistemas_de_argv():
     try:
@@ -170,10 +174,6 @@ while 1:
     if      data        == r'/h':
         conn.sendall(menu().encode(encodingdefault))
     elif    data        == r'/f':
-        try:
-            os.mkdir('server_files')
-        except FileExistsError:
-            pass
         conn.sendall(str(datalist()).encode(encodingdefault))
     elif    data        == r'/m':
         file        =   open(f'log_clients/{date}','r')
