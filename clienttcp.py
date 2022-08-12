@@ -75,14 +75,14 @@ while 1:
         data    =   client.recv(buffersize)
         print(data)   
         while data:
-            file.write(data)
+            file.write(str(data))
             data    =   client.recv(buffersize)   
         file.close()
 
     elif ms[:3]    == r'/u:':
         file        =   open(fr'client_files/{ms[3:]}','rb')
         readfile    =   file.read()
-        client.send(readfile)
+        client.sendall(readfile)
         print('arquivo encaminhado')
         file.close()
         
