@@ -35,10 +35,11 @@ def menu():
     msgmenu = r''' 
 1°-   /q                sair 
 2°-   /h                help
-3°-   /f                listar os arquivos
-4°-   /d:namefile       downloud do arquivo
-5°-   /u:namefile       uploud do arquivo
-6°-   /m                listar ips,date,msgs'''
+3°-   /f                listar os arquivos para downloud
+4°-   /c                listar os arquivos pasta do client
+5°-   /d:namefile       downloud do arquivo
+6°-   /u:namefile       uploud do arquivo
+7°-   /m                listar ips,date,msgs'''
     return msgmenu
 
 # listar arquivos
@@ -48,7 +49,7 @@ def datalist(self):
     for file in filelist:
         file        =   str(file)
         wordspace   =   ((48-len(file))*' ')
-        totallist   =   totallist    +   (file + wordspace + (str(os.path.getsize(fr'server_files/{file}'))) + ' Bytes'+'\n')
+        totallist   =   totallist    +   (file + wordspace + (str(os.path.getsize(fr'{self}/{file}'))) + ' Bytes'+'\n')
     return totallist
 
 def createlog():
@@ -175,7 +176,7 @@ while 1:
         conn.sendall(menu().encode(encodingdefault))
     elif    data        == r'/f':
         conn.sendall(str(datalist('server_files')).encode(encodingdefault))
-    elif    data        == r'/ff':
+    elif    data        == r'/c':
         conn.sendall(str(datalist('client_files')).encode(encodingdefault))
     elif    data        == r'/m':
         file        =   open(f'log_clients/{date}','r')

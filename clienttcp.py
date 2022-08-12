@@ -19,6 +19,14 @@ def recvprint():
     print(data.decode(encodingdefault))
     return data
 
+def datalist(self):
+    totallist       =   str()
+    filelist        =   os.listdir(self)
+    for file in filelist:
+        file        =   str(file)
+        wordspace   =   ((48-len(file))*' ')
+        totallist   =   totallist    +   (file + wordspace + (str(os.path.getsize(fr'{self}/{file}'))) + ' Bytes'+'\n')
+    return totallist
 
 
 try:
@@ -43,11 +51,13 @@ while 1:
     if ms     == r''        :
         print('/h'+20*' '+'help')
         continue
-    client.send(ms.encode(encodingdefault))
+    client.sendall(ms.encode(encodingdefault))
     
     if   ms     == r'/h'    :
         recvprint()
 
+    elif ms     == r'/c':
+        print(datalist('client_files'))
     elif ms     == r'/f'    :
         recvprint()
 
@@ -69,10 +79,8 @@ while 1:
 
     elif ms[:3]    == r'/u:':
         file        =   open(fr'client_files/{ms[3:]}','rb')
-        readfile    =   file.read(buffersize)
-        while (readfile):
-            client.send(readfile)
-            readfile    =   file.read(buffersize)
+        readfile    =   file.read()
+        client.send(readfile)
         print('arquivo encaminhado')
         file.close()
         
