@@ -193,7 +193,7 @@ while 1:
         data    =   conn.recv(buffersize)
         print(data)   
         while data:
-            file.write(str(data))
+            file.write(data)
             data    =   conn.recv(buffersize)   
         file.close()
 

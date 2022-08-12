@@ -3,6 +3,7 @@
 
 import os
 import socket
+import time
 
 
 
@@ -75,11 +76,12 @@ while 1:
         data    =   client.recv(buffersize)
         print(data)   
         while data:
-            file.write(str(data))
+            file.write(data)
             data    =   client.recv(buffersize)   
         file.close()
 
     elif ms[:3]    == r'/u:':
+        time.sleep(1.0)
         file        =   open(fr'client_files/{ms[3:]}','rb')
         readfile    =   file.read()
         client.sendall(readfile)
