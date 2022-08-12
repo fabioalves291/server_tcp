@@ -70,8 +70,10 @@ while 1:
                 break
     
     elif ms[:3]     == r'/d:'   :
-        file        =   open(f'client_files/{ms[3:]}','wb')
-        data    =   client.recv(buffersize)   
+        file        =   open(fr'client_files/{ms[3:]}','wb')
+        print(ms)
+        data    =   client.recv(buffersize)
+        print(data)   
         while data:
             file.write(data)
             data    =   client.recv(buffersize)   

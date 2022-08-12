@@ -185,13 +185,15 @@ while 1:
     elif    data[:3]    == r'/d:':
         file        =   open(fr'server_files/{data[3:]}','rb')
         read        =   file.read()
-        conn.send(read)
+        conn.sendall(read)
     elif    data[:3]    ==  r'/u:':
-        file        =   open(f'server_files/{data[3:]}','wb')
-        data        =   conn.recv(buffersize)
-        while (data):
+        file        =   open(fr'server_files/{data[3:]}','wb')
+        print(data)
+        data    =   conn.recv(buffersize)
+        print(data)   
+        while data:
             file.write(data)
-            data    =   conn.recv(buffersize)
+            data    =   conn.recv(buffersize)   
         file.close()
 
     elif    data        == r'/q':
