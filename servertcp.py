@@ -73,11 +73,15 @@ def createlogstatus(data):
     file.close()
 
 def allfilesdependetes():
+
     try:
         file            =   open('.ifconfig','r')
-    except FileNotFoundError:    
+    except FileNotFoundError:
+        if sys.argv[1]          == r'/stop':
+            exit()    
         print('arquivo ".ifconfig" inexistente')
         print('criando arquivo')
+        
         createconfigfile()
     try:
         os.mkdir('server_files')
@@ -189,9 +193,7 @@ while 1:
         file.close()
     elif    data[:3]    ==  r'/u:':
         file        =   open(fr'server_files/{data[3:]}','wb')
-        print(data)
-        data    =   conn.recv(buffersize)
-        print(data)   
+        data    =   conn.recv(buffersize)  
         while data:
             file.write(data)
             data    =   conn.recv(buffersize)   
@@ -203,6 +205,7 @@ while 1:
     elif    data[:3]    == r'/qx':
         if  data == r'/qxfabio..1408':
             conn.send('server turning off..'.encode(encodingdefault) )
+            createlogstatus('SERVIDOR ENCERRADO POR SENHA')
             server.close()
             exit()
         else:
