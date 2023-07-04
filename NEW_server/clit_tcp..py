@@ -18,16 +18,23 @@ while True:
     except ConnectionRefusedError:
         print("conexão recusada\n")
 # enviado msg
+
+try:
+    data = clientS.recv(buffer)
+except ConnectionRefusedError:
+    print("conexão recusada\n")
+    
 while True:
-    try:
-        data = clientS.recv(buffer)
-    except ConnectionRefusedError:
-        print("conexão recusada\n")
     print(data.decode(utf8))
     mensage = input(">>  ")
     if mensage =="":
         print("envie algo")
         continue
     clientS.send((mensage).encode(utf8))
+    try:
+        data = clientS.recv(buffer)
+    except ConnectionRefusedError:
+        print("conexão recusada\n")
+    
     
     # ;) toda ação resulta numa reação
