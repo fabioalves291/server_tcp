@@ -12,3 +12,7 @@ varios serves em portas diferentes mas o client so conectará de acordo com ifco
 #### !No terml do linux use
 
     python3 servertcp (argv) ou python servertcp (argv) ou ./servertcp (argv)
+
+
+o server antigo ele requecebia uma requisição e fechava a requisição, nao sendo uma conexões simuntaneas mas rapidas, recebia  a solicitação, enviava o arquivo e fechava a conexão para proximo cliente.
+o novo ele coloca as conexões em uma lista em passa pelpo for e ainda colocando tredding para deixar simuntaneas e com processos separados.

@@ -16,31 +16,41 @@ server_socket.listen(userlim)
 
 # Lista de sockets para leitura
 sockets_list = [server_socket]
-client_threads = {}  # Dicionário para mapear os clientes às suas threads
+client_threads = {}  
 
 utf8 = "utf-8"
 
 def conn(addr, data, sock):
     print(addr, "enviou:", data.decode(utf8))
     dataD = data.decode(utf8)
-
-    if dataD == "ext":
-        print("finalizando conexão")
-        sock.close()
-        sockets_list.remove(sock)
+    if dataD == "b":
+        pass
+     elif dataD[:2] == "d:":
+        print(">> filename:", dataD[2:])
     elif dataD == "e":
         print("close server...")
         time.sleep(2)
         exit()
-    elif dataD == "\\h":
-        sock.send(menu.encode(utf8))
     elif dataD == "f":
         sock.send("lista".encode(utf8))
-        
-    elif dataD[:2] == "d:":
-        print(">> filename:", dataD[2:])
+    elif dataD == "\\h" or dataD == "?":
+        sock.send(menu.encode(utf8))
+    elif dataD == "q":
+        msg = ">> finalizando conexão",addr
+        print(msg)
+        sock.send(msg.encode(utf8))
+        sock.close()
+        sockets_list.remove(sock)
+        exit()
+    
+    elif dataD == "u":
+        pass
+    elif dataD == "rss":
+        pass
+    elif dataD == "w"
+        pass
     else:
-        sock.send("opção inválida".encode(utf8))
+        sock.send(">> opção inválida".encode(utf8))
 
 def handle_client(connection):
     while True:
@@ -50,14 +60,14 @@ def handle_client(connection):
                 conn(connection.getpeername(), data, connection)
             else:
                 ## criar log final de seção
-                print('Conexão encerrada por:', connection.getpeername())
+                print('>> Conexão encerrada por:', connection.getpeername())
                 sockets_list.remove(connection)  # Remover o socket da lista
                 connection.close()
                 break
         except ConnectionResetError:
             # Conexão encerrada inesperadamente
             ## criar log de encerramento bruto
-            print('Conexão encerrada por:', connection.getpeername())
+            print('>> Conexão encerrada por:', connection.getpeername())
             sockets_list.remove(connection)  # Remover o socket da lista
             connection.close()
             break
@@ -69,13 +79,12 @@ def accept_connections():
             read_sockets, _, _ = select.select(sockets_list, [], [])
 
             for sock in read_sockets:
-                # Nova conexão recebida
                 if sock == server_socket:
                     connection, addr = server_socket.accept()
                     #criar log de acesso
                     sockets_list.append(connection)
                     connection.send(">> Bem-vindo, \\h - help".encode(utf8))
-                    print('Conexão estabelecida por:', addr)
+                    print('>> Conexão estabelecida por:', addr)
 
                     # Cria uma nova thread para lidar com o cliente
                     thread = threading.Thread(target=handle_client, args=(connection,))
@@ -86,6 +95,8 @@ def accept_connections():
             print('Error:', str(e))
 
 # Inicia a thread para aceitar conexões
-print("server open")
+print(">> verificando arquivos de configuração...")
+# verificar arquivos de configurações
+print(">> server open")
 accept_thread = threading.Thread(target=accept_connections)
 accept_thread.start()

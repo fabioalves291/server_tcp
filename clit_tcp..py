@@ -23,7 +23,7 @@ try:
     data = clientS.recv(buffer)
 except ConnectionRefusedError:
     print("conexão recusada\n")
-    
+#criar uma tradding para ficar sempre ouvindo.! e mostrando mensagens recebidas pelo servidor
 while True:
     print(data.decode(utf8))
     mensage = input(">>  ")
