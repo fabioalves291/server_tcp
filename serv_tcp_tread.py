@@ -1,7 +1,10 @@
 import socket
 import select
 import threading
-from default import menu
+import time
+from controlls import verificar_dirsDefauts
+from default import menu,filesDir_names_defauts
+
 
 # Configurações do servidor
 host = '127.0.0.1'  
@@ -25,18 +28,16 @@ def conn(addr, data, sock):
     dataD = data.decode(utf8)
     if dataD == "b":
         pass
-     elif dataD[:2] == "d:":
+    elif dataD[:2] == "d:":
         print(">> filename:", dataD[2:])
-    elif dataD == "e":
-        print("close server...")
-        time.sleep(2)
-        exit()
     elif dataD == "f":
         sock.send("lista".encode(utf8))
     elif dataD == "\\h" or dataD == "?":
         sock.send(menu.encode(utf8))
+    elif dataD == "l":
+        pass
     elif dataD == "q":
-        msg = ">> finalizando conexão",addr
+        msg = (">> finalizando conexão "+addr)
         print(msg)
         sock.send(msg.encode(utf8))
         sock.close()
@@ -47,7 +48,7 @@ def conn(addr, data, sock):
         pass
     elif dataD == "rss":
         pass
-    elif dataD == "w"
+    elif dataD == "w":
         pass
     else:
         sock.send(">> opção inválida".encode(utf8))
@@ -96,6 +97,8 @@ def accept_connections():
 
 # Inicia a thread para aceitar conexões
 print(">> verificando arquivos de configuração...")
+verificar_dirsDefauts(filesDir_names_defauts)
+
 # verificar arquivos de configurações
 print(">> server open")
 accept_thread = threading.Thread(target=accept_connections)
