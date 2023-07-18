@@ -28,16 +28,12 @@ while True:
         print("conexão recusada\n")
 
 #criar uma tradding para ficar sempre ouvindo.! e mostrando mensagens recebidas pelo servidor
-
-# enviado msg
 thread = threading.Thread(target=recvallmsg)
 thread.start()
 
 while True:
     mensage = input(">>  ")
     if mensage =="":
-        print("envie algo")
+        print(">> empty input")
         continue
     clientS.send((mensage).encode(utf8))
-
-    # ;) toda ação resulta numa reação
