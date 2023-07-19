@@ -2,7 +2,7 @@ import socket
 import select
 import threading
 import time
-from controlls import verificar_dirsDefauts
+from controlls import verificar_dirsDefauts,list_dir_strg
 from default import menu,filesDir_names_defauts
 
 
@@ -31,7 +31,8 @@ def conn(addr, data, sock):
     elif dataD[:2] == "d:":
         print(">> filename:", dataD[2:])
     elif dataD == "f":
-        sock.send("lista".encode(utf8))
+        print(list_dir_strg())
+        sock.send(list_dir_strg().encode(utf8))
     elif dataD == "\\h" or dataD == "?":
         sock.send(menu.encode(utf8))
     elif dataD == "l":

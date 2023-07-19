@@ -2,8 +2,8 @@
 import threading
 import socket
 import datetime
+import time
 #from default import destino
-
 
 destino         = "localhost",2323
 clientS         = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -18,22 +18,28 @@ def recvallmsg():
             print(data.decode(utf8))
         except ConnectionRefusedError:
             print("conexão recusada\n")
+try:
+    while True:
+        try:
+            conn           = clientS.connect(destino)
+            print(">> Connection success")
+            break
+        except ConnectionRefusedError:
+            time.sleep(4)
+            print(">> ERR Connection\n")
 
-while True:
-    try:
-        conn           = clientS.connect(destino)
-        print("conexão estabecida")
-        break
-    except ConnectionRefusedError:
-        print("conexão recusada\n")
+    thread = threading.Thread(target=recvallmsg)
+    thread.start()
+    
 
-#criar uma tradding para ficar sempre ouvindo.! e mostrando mensagens recebidas pelo servidor
-thread = threading.Thread(target=recvallmsg)
-thread.start()
-
-while True:
-    mensage = input(">>  ")
-    if mensage =="":
-        print(">> empty input")
-        continue
-    clientS.send((mensage).encode(utf8))
+    while True:
+            time.sleep(0.005)
+            # colocar um await depois caso tenha mensagem para receber
+            mensage = input(">>  ")
+            if mensage =="":
+                print(">> empty input")
+                continue
+            clientS.send((mensage).encode(utf8))
+#depois trocar por um redirecionadamento de ponteiro!
+except ConnectionResetError:
+    print(">> Lost connection")
