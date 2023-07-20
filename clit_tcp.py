@@ -49,7 +49,7 @@ try:
                     file.write(data)
                     data    =   client.recv(buffer)   
                 file.close()
-            
+                
 #depois trocar por um redirecionadamento de ponteiro!
 except ConnectionResetError:
     print(">> Lost connection")
