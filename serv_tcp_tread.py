@@ -30,9 +30,8 @@ def conn(addr, data, sock):
         pass
     elif dataD[:2] == "d:":
         print(">> filename:", dataD[2:])
-    elif dataD == "f":
-        print(list_dir_strg())
-        sock.send(list_dir_strg().encode(utf8))
+    elif dataD == "f":         
+        sock.send((list_dir_strg("files_server")[0]).encode(utf8))
     elif dataD == "\\h" or dataD == "?":
         sock.send(menu.encode(utf8))
     elif dataD == "l":
@@ -97,7 +96,7 @@ def accept_connections():
             print('Error:', str(e))
 
 # Inicia a thread para aceitar conexões
-print(">> verificando arquivos de configuração...")
+print(">> Verifying configuration files")
 verificar_dirsDefauts(filesDir_names_defauts)
 
 # verificar arquivos de configurações

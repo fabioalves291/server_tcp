@@ -19,5 +19,8 @@ def verificar_criarDir(self):
 def verificar_dirsDefauts(self):
     list(map(verificar_criarDir,self))
     
-def list_dir_strg():
-    return dir_list(self)
+def list_dir_strg(self):
+    msg , cont_dir =      dir_list(self)
+    if cont_dir == 0:
+        return (">> empty folder",cont_dir)
+    return msg,cont_dir
