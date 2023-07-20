@@ -1,5 +1,6 @@
 import os
 
+utf8 = "UTF-8"
 menu = """ 
 ###################################################
 f       -   listar arquivos para download

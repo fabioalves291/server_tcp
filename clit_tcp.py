@@ -38,8 +38,18 @@ try:
             mensage = input(">>  ")
             if mensage =="":
                 print(">> empty input")
+                
                 continue
             clientS.send((mensage).encode(utf8))
+            
+            if mensage[:1] == 'd:':
+                file        =   open(fr'client_files/{ms[3:]}','wb')
+                data    =   client.recv(buffer)   
+                while data:
+                    file.write(data)
+                    data    =   client.recv(buffer)   
+                file.close()
+            
 #depois trocar por um redirecionadamento de ponteiro!
 except ConnectionResetError:
     print(">> Lost connection")

@@ -2,8 +2,8 @@ import socket
 import select
 import threading
 import time
-from controlls import verificar_dirsDefauts,list_dir_strg
-from default import menu,filesDir_names_defauts
+from controlls import verificar_dirsDefauts, list_dir_strg, sendfile
+from default import menu, filesDir_names_defauts
 
 
 # Configurações do servidor
@@ -24,12 +24,13 @@ client_threads = {}
 utf8 = "utf-8"
 
 def conn(addr, data, sock):
-    print(addr, "enviou:", data.decode(utf8))
+    print(">> ",addr, "enviou:", data.decode(utf8))
     dataD = data.decode(utf8)
     if dataD == "b":
         pass
     elif dataD[:2] == "d:":
-        print(">> filename:", dataD[2:])
+        #print(">> filename:", dataD[2:])
+        sendfile(data, conn)
     elif dataD == "f":         
         sock.send((list_dir_strg("files_server")[0]).encode(utf8))
     elif dataD == "\\h" or dataD == "?":

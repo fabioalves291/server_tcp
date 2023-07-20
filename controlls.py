@@ -1,4 +1,4 @@
-import default
+from default import utf8
 import models
 import os
 from models import *
@@ -24,3 +24,11 @@ def list_dir_strg(self):
     if cont_dir == 0:
         return (">> empty folder",cont_dir)
     return msg,cont_dir
+    
+def sendfile(data):
+    #mudar nome da pasta para arquivo no pasta default
+    data    =   data.decode(utf8)
+    file        =   open(fr'files_server/{data[2:]}','rb')
+    read        =   file.read()
+    con.sendall(read)
+    file.close()
