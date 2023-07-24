@@ -12,12 +12,21 @@ bollConexo      = False
 buffer          = 512
 
 def recvallmsg():
+    
     while True:
+        try:
+            global mensage
+            if mensage[:1] == 'd:':
+                print("Fechando tred")
+                return 0 
+        except NameError:
+            pass
         try:
             data = clientS.recv(buffer)
             print(data.decode(utf8))
         except ConnectionRefusedError:
             print("conexão recusada\n")
+
 try:
     while True:
         try:
@@ -38,18 +47,19 @@ try:
             mensage = input(">>  ")
             if mensage =="":
                 print(">> empty input")
-                
                 continue
             clientS.send((mensage).encode(utf8))
             
             if mensage[:1] == 'd:':
+                
                 file        =   open(fr'client_files/{ms[3:]}','wb')
                 data    =   client.recv(buffer)   
                 while data:
                     file.write(data)
                     data    =   client.recv(buffer)   
                 file.close()
-                
+
+                thread.start()
 #depois trocar por um redirecionadamento de ponteiro!
 except ConnectionResetError:
     print(">> Lost connection")

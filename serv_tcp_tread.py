@@ -1,7 +1,7 @@
 import socket
 import select
 import threading
-import datatime
+import datetime
 import time
 from controlls import verificar_dirsDefauts, list_dir_strg, sendfile
 from default import menu, filesDir_names_defauts
@@ -30,8 +30,9 @@ def conn(addr, data, sock):
     if dataD == "b":
         pass
     elif dataD[:2] == "d:":
-        #print(">> filename:", dataD[2:])
-        sendfile(data, conn)
+        print(">> filename:", dataD[2:])
+        #dataFile    =   getfile(dataD[2:])
+        sendfile(dataD[2:], sock)
     elif dataD == "f":         
         sock.send((list_dir_strg("files_server")[0]).encode(utf8))
     elif dataD == "\\h" or dataD == "?":

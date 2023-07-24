@@ -24,11 +24,15 @@ def list_dir_strg(self):
     if cont_dir == 0:
         return (">> empty folder",cont_dir)
     return msg,cont_dir
-    
-def sendfile(data):
+
+def getfile(self):
+    namefile    =   self
+
+def sendfile(namefile,connex):
     #mudar nome da pasta para arquivo no pasta default
-    data    =   data.decode(utf8)
-    file        =   open(fr'files_server/{data[2:]}','rb')
+    # data    =   data.decode(utf8)
+    
+    file        =   open(fr'files_server/{namefile}','rb')
     read        =   file.read()
-    con.sendall(read)
+    connex.sendall(read)
     file.close()
