@@ -33,6 +33,8 @@ def conn(addr, data, sock):
         print(">> filename:", dataD[2:])
         #dataFile    =   getfile(dataD[2:])
         sendfile(dataD[2:], sock)
+        
+
     elif dataD == "f":         
         sock.send((list_dir_strg("files_server")[0]).encode(utf8))
     elif dataD == "\\h" or dataD == "?":

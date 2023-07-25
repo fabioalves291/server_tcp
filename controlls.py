@@ -31,8 +31,11 @@ def getfile(self):
 def sendfile(namefile,connex):
     #mudar nome da pasta para arquivo no pasta default
     # data    =   data.decode(utf8)
-    
-    file        =   open(fr'files_server/{namefile}','rb')
-    read        =   file.read()
-    connex.sendall(read)
-    file.close()
+    try:
+        print(namefile)
+        file        =   open(fr'files_server/{namefile}','rb')
+        read        =   file.read()
+        connex.sendall(read)
+        file.close()
+    except FileNotFoundError:
+        connex.sendall((fr">>{namefile} inistent").encode(utf8))
