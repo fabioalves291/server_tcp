@@ -39,3 +39,12 @@ def sendfile(namefile,connex):
         file.close()
     except FileNotFoundError:
         connex.sendall((fr">>{namefile} inistent").encode(utf8))
+
+def listconn(conns):
+    strlist = str()
+    cont = 0
+    for conexão in conns[1:]:
+        strlist += (cont) +str(conexão.getpeername()) + "\n"
+        cont    += 1
+    return strlist
+

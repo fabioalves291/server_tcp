@@ -3,7 +3,7 @@ import select
 import threading
 import datetime
 import time
-from controlls import verificar_dirsDefauts, list_dir_strg, sendfile
+from controlls import verificar_dirsDefauts, list_dir_strg, sendfile, listconn 
 from default import menu, filesDir_names_defauts
 
 
@@ -40,7 +40,11 @@ def conn(addr, data, sock):
     elif dataD == "\\h" or dataD == "?":
         sock.send(menu.encode(utf8))
     elif dataD == "l":
-        pass
+        
+        strglistconn = listconn(sockets_list)
+        print(strglistconn)
+        sock.sendall(strglistconn.encode(utf8))
+        
     elif dataD == "q":
         msg = (">> finalizando conexão "+addr)
         print(msg)

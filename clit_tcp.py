@@ -50,9 +50,10 @@ def recvallmsg():
                 mensage = str()
         except NameError:
             pass
-        except socket.timeout:
+        except TimeoutError:
             file.close()
             mensage = str()
+            print("timed out")
             return 0 
 
     while True:
