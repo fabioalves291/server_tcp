@@ -3,7 +3,7 @@ import select
 import threading
 import datetime
 import time
-from controlls import verificar_dirsDefauts, list_dir_strg, sendfile, listconn 
+from controlls import verificar_dirsDefauts, list_dir_strg, sendfile, listconn, sendto
 from default import menu, filesDir_names_defauts
 
 
@@ -27,7 +27,7 @@ utf8 = "utf-8"
 def conn(addr, data, sock):
     print(">> ",addr, "enviou:", data.decode(utf8))
     dataD = data.decode(utf8)
-    if dataD == "b":
+    if dataD == "b:":
         pass
     elif dataD[:2] == "d:":
         print(">> filename:", dataD[2:])
@@ -40,11 +40,11 @@ def conn(addr, data, sock):
     elif dataD == "\\h" or dataD == "?":
         sock.send(menu.encode(utf8))
     elif dataD == "l":
-        
         strglistconn = listconn(sockets_list)
-        print(strglistconn)
         sock.sendall(strglistconn.encode(utf8))
-        
+    elif dataD[:2] == "m:":
+        sendto(sockets_list,sock,dataD)
+  
     elif dataD == "q":
         msg = (">> finalizando conexão "+addr)
         print(msg)

@@ -33,20 +33,14 @@ def recvallmsg():
                             break
                     except UnicodeDecodeError:
                         pass
-                    #input(str(data)+"recebendo")
+                    
                     file.write(data)
                     if not mensage[:2] == 'd:':
                         # print("diferente de d:")
                         # 2 versao, 1 no udp
                         break
-                    # print("segundo data")
                     data    =   clientS.recv(buffer)   
                     print(data)
-                #     print("finalizado segundo") 
-                # print(f">> Downloaded {mensage[2:]}")
-                # print(f">> Saving {mensage[2:]}")
-                
-                # print("finalizando arquivo")
                 mensage = str()
         except NameError:
             pass
@@ -70,6 +64,8 @@ def recvallmsg():
             except UnicodeDecodeError:
                 print("unicode")
                 rcvfile()
+            except TimeoutError:
+                print("timed out")
 
 try:
     os.mkdir('client_files')
@@ -94,7 +90,7 @@ try:
     while True:
             time.sleep(0.005)
             # colocar um await depois caso tenha mensagem para receber
-            mensage = input(">>  ")
+            mensage = input(">> ")
             if mensage =="":
                 print(">> empty input")
                 continue

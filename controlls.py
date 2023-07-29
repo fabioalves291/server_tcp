@@ -42,9 +42,20 @@ def sendfile(namefile,connex):
 
 def listconn(conns):
     strlist = str()
-    cont = 0
+    cont = 1
     for conexão in conns[1:]:
-        strlist += (cont) +str(conexão.getpeername()) + "\n"
+        strlist += str(cont) +" "+ str(conexão.getpeername()) + "\n"
         cont    += 1
     return strlist
 
+def sendto(sockets_list,conn,msg):
+    try:
+        msgsplit = msg.split(":")
+        if len(msgsplit) < 3:
+            return conn.send(">> arg invalid".encode(utf8))
+        for sock in sockets_list[1:]:
+            strut = str( "("+"'"+msgsplit[1]+"'"+", "+msgsplit[2]+")")
+            if str(sock.getpeername()) == strut:
+                sock.send(msgsplit[3].encode(utf8))
+    except IndexError:
+        return conn.send(">> arg invalid".encode(utf8))
