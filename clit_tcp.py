@@ -100,7 +100,10 @@ try:
             elif mensage[:2] =="d:":
                 #time.sleep(10) error perder o buffer
                 tradTruercvmsg = False
-            elif mensage[:2]=="u":
+            elif mensage[:2]=="u:":
+                file = open("client_files/testec","r")
+                fileread=file()
+                clientS.sendfile(fileread)
                 pass
             else:
                 tradTruercvmsg = True
