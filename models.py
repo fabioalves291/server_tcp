@@ -10,5 +10,4 @@ def dir_list(self):
         file        =   str(file)
         wordspace   =   ((48-len(file))*' ')
         resulted_dir_listed   =  resulted_dir_listed    +   (file + wordspace + (str(os.path.getsize(fr'{self}/{file}'))) + ' Bytes'+'\n')
-    
     return (resulted_dir_listed,cont_dir)

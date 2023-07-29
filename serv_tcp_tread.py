@@ -3,10 +3,16 @@ import select
 import threading
 import datetime
 import time
-from controlls import verificar_dirsDefauts, list_dir_strg, sendfile, listconn, sendto
+from controlls import (verificar_dirsDefauts, list_dir_strg, sendfile, 
+                       listconn, sendto, creatuserforip,
+                       createlog_client,createlogstatus,
+                       queryallhistory,sendmsgallclients)
 from default import menu, filesDir_names_defauts
+from Oldmodel import sistemas_de_argv
 
 
+#init arg
+sistemas_de_argv()
 # Configurações do servidor
 host = '127.0.0.1'  
 port = 2323        
@@ -25,28 +31,32 @@ client_threads = {}
 utf8 = "utf-8"
 
 def conn(addr, data, sock):
-    print(">> ",addr, "enviou:", data.decode(utf8))
     dataD = data.decode(utf8)
+    structmsg = str(addr)+"enviou:"+str(dataD)
+    print(">> "+structmsg)
+    createlog_client(addr[0],structmsg)
+    
     if dataD == "b:":
-        pass
+        sendmsgallclients(sock,data)
     elif dataD[:2] == "d:":
-        print(">> filename:", dataD[2:])
-        #dataFile    =   getfile(dataD[2:])
-        sendfile(dataD[2:], sock)
-        
+        #socket.sendfile(file, offset=0, count=None)
 
+        sendfile(dataD[2:], sock)        
     elif dataD == "f":         
         sock.send((list_dir_strg("files_server")[0]).encode(utf8))
+    
     elif dataD == "\\h" or dataD == "?":
         sock.send(menu.encode(utf8))
     elif dataD == "l":
         strglistconn = listconn(sockets_list)
         sock.sendall(strglistconn.encode(utf8))
+    elif dataD == "lh":
+        sock.sendall((queryallhistory(addr[0])).encode(utf8))
     elif dataD[:2] == "m:":
         sendto(sockets_list,sock,dataD)
   
     elif dataD == "q":
-        msg = (">> finalizando conexão "+addr)
+        msg = (">> connection terminated by: "+addr)
         print(msg)
         sock.send(msg.encode(utf8))
         sock.close()
@@ -60,7 +70,7 @@ def conn(addr, data, sock):
     elif dataD == "w":
         pass
     else:
-        sock.send(">> opção inválida".encode(utf8))
+        sock.send(">> Invalid option".encode(utf8))
 
 def handle_client(connection):
     while True:
@@ -70,14 +80,14 @@ def handle_client(connection):
                 conn(connection.getpeername(), data, connection)
             else:
                 ## criar log final de seção
-                print('>> Conexão encerrada por:', connection.getpeername())
+                print('>> connection terminated by:', connection.getpeername())
                 sockets_list.remove(connection)  # Remover o socket da lista
                 connection.close()
                 break
         except ConnectionResetError:
             # Conexão encerrada inesperadamente
             ## criar log de encerramento bruto
-            print('>> Conexão encerrada por:', connection.getpeername())
+            print('>> connection terminated by:', connection.getpeername())
             sockets_list.remove(connection)  # Remover o socket da lista
             connection.close()
             break
@@ -91,7 +101,7 @@ def accept_connections():
             for sock in read_sockets:
                 if sock == server_socket:
                     connection, addr = server_socket.accept()
-                    #criar log de acesso
+                    creatuserforip(str(addr[0]))
                     sockets_list.append(connection)
                     connection.send(">> Bem-vindo, \\h - help".encode(utf8))
                     print('>> Conexão estabelecida por:', addr)
@@ -110,5 +120,7 @@ verificar_dirsDefauts(filesDir_names_defauts)
 
 # verificar arquivos de configurações
 print(">> server open")
+
 accept_thread = threading.Thread(target=accept_connections)
 accept_thread.start()
+createlogstatus("SERVER ACTIVATED")
