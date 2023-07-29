@@ -1,6 +1,6 @@
 import datetime
 import os
-from default import utf8, namedir_clientlog, namedir_log
+from default import utf8, namedir_clientlog, namedir_log,namedir_serverfiles
 import models
 from models import *
 
@@ -114,3 +114,11 @@ def sendmsgallclients(sock,data):
         socket.send(data.encode(utf8))
     return 0 
 
+def uploadbyclient(sock,namefile):
+    file = open(f"{namedir_serverfiles}/{namefile}","w")
+    data = sock.recv()
+    while data:
+        file.write(data)
+        data    =   clientS.recv(buffer)   
+        print(data)
+    file.close()

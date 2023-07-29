@@ -100,7 +100,8 @@ try:
             elif mensage[:2] =="d:":
                 #time.sleep(10) error perder o buffer
                 tradTruercvmsg = False
-        
+            elif mensage[:2]=="u":
+                pass
             else:
                 tradTruercvmsg = True
             clientS.send((mensage).encode(utf8))

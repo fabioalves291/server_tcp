@@ -5,8 +5,8 @@ import datetime
 import time
 from controlls import (verificar_dirsDefauts, list_dir_strg, sendfile, 
                        listconn, sendto, creatuserforip,
-                       createlog_client,createlogstatus,
-                       queryallhistory,sendmsgallclients)
+                       createlog_client, createlogstatus,
+                       queryallhistory, sendmsgallclients, uploadbyclient)
 from default import menu, filesDir_names_defauts
 from Oldmodel import sistemas_de_argv
 
@@ -64,7 +64,7 @@ def conn(addr, data, sock):
         exit()
     
     elif dataD == "u":
-        pass
+        uploadbyclient()
     elif dataD == "rss":
         pass
     elif dataD == "w":
