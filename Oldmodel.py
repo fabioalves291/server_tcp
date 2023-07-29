@@ -4,10 +4,10 @@ from controlls import createlogstatus
 def sistemas_de_argv():
     try:
         if sys.argv[1]         ==   r'/start':
-            createlogstatus('SERVIDOR CARREGADO NA MEMÓRIA')
+            createlogstatus('SERVER ACTIVATED')
             print('primeiro acesso deve ser em primeiro plano para a configuração de ifconfig se estiver configurado ignore esta mensagem')
         elif sys.argv[1]       ==   r'/stop':
-            createlogstatus('SERVIDOR REMOVIDO NA MEMÓRIA')
+            createlogstatus('SERVER STOPPING')
             # listconfig          =   readifconfig()    
             port                =    2323   
             WindowsLinux        =   input('digite 1 para windows ou 2 para linux:')
