@@ -18,42 +18,41 @@ def recvallmsg():
         try:
             global tradTruercvmsg,mensage  
             if mensage[:2] == 'd:':
-                print(mensage,tradTruercvmsg,"bollfile")
+                #print(mensage,tradTruercvmsg,"bollfile")
                 namefile = mensage[2:]
                 print(f">> Downloading {mensage[2:]}")
-                file        =   open(fr'client_files/{mensage[2:]}','wb')
+                filerecv        =   open(fr'client_files/{mensage[2:]}','wb')
                 data    =   clientS.recv(buffer)   
                 print(data)
                 while data:
                     try:
                         #apag
-                        if f" final {namefile}" in data.decode(utf8):
-                            print(f">> {namefile} finally")
-                            break
                         if data.decode(utf8) == fr">>{namefile} inistent":
                             break
                     except UnicodeDecodeError:
                         pass
                     #apagar
-                    file.write(data)
+                    filerecv.write(data)
                     if not mensage[:2] == 'd:':
                         # print("diferente de d:")
                         # 2 versao, 1 no udp
                         break
                     data    =   clientS.recv(buffer)   
                     print(data)
+                print("end")
+                filerecv.close()
                 mensage = str()
         except NameError:
             pass
         except TimeoutError:
-            file.close()
+            filerecv.close()
             mensage = str()
             print("timed out")
             return 0 
     while True:
         rcvfile()
         global tradTruercvmsg
-        
+
         if tradTruercvmsg:
             #tradTruercvmsg = False # desativaapois receber a primeira mensagem
             #desativado pois agora tem time out
@@ -99,12 +98,25 @@ try:
                 continue
             elif mensage[:2] =="d:":
                 #time.sleep(10) error perder o buffer
+                clientS.send((mensage).encode(utf8))
                 tradTruercvmsg = False
+                continue
             elif mensage[:2]=="u:":
-                file = open("client_files/testec","r")
-                fileread=file()
-                clientS.sendfile(fileread)
-                pass
+                clientS.send((mensage).encode(utf8))
+
+                namefile = mensage[2:]
+                lenfile = str(os.path.getsize(f'client_files/{namefile}'))
+                clientS.send((f'{lenfile}\nlenfile\n').encode(utf8))
+                
+                file = open(f"client_files/{namefile}","rb")
+                fileread = file.read()
+                # print(fileread)
+                print(len(fileread))
+                clientS.send(fileread)
+                file.close()
+                print(namefile,"Envoy")
+                
+                continue
             else:
                 tradTruercvmsg = True
             clientS.send((mensage).encode(utf8))

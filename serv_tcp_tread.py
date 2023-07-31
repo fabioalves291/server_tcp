@@ -11,6 +11,8 @@ from default import menu, filesDir_names_defauts
 from Oldmodel import sistemas_de_argv
 
 
+print(">> Verifying configuration files")
+verificar_dirsDefauts(filesDir_names_defauts)
 #init arg
 sistemas_de_argv()
 # Configurações do servidor
@@ -36,11 +38,10 @@ def conn(addr, data, sock):
     print(">> "+structmsg)
     createlog_client(addr[0],structmsg)
     
-    if dataD == "b:":
-        sendmsgallclients(sock,data)
+    if dataD[:2] == "b:":
+        sendmsgallclients(sockets_list,dataD[2:])
     elif dataD[:2] == "d:":
         #socket.sendfile(file, offset=0, count=None)
-
         sendfile(dataD[2:], sock)        
     elif dataD == "f":         
         sock.send((list_dir_strg("files_server")[0]).encode(utf8))
@@ -63,8 +64,9 @@ def conn(addr, data, sock):
         sockets_list.remove(sock)
         exit()
     
-    elif dataD == "u":
-        uploadbyclient()
+    elif dataD[:2] == "u:":
+        MSGLEN = sock.recv(512)
+        uploadbyclient(sock,dataD[2:],MSGLEN)
     elif dataD == "rss":
         pass
     elif dataD == "w":
@@ -115,12 +117,12 @@ def accept_connections():
             print('Error:', str(e))
 
 # Inicia a thread para aceitar conexões
-print(">> Verifying configuration files")
-verificar_dirsDefauts(filesDir_names_defauts)
+
 
 # verificar arquivos de configurações
 print(">> server open")
 
 accept_thread = threading.Thread(target=accept_connections)
-accept_thread.start()
 createlogstatus("SERVER ACTIVATED")
+accept_thread.start()
+

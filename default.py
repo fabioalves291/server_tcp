@@ -13,6 +13,7 @@ u:      -   enviar arquivo para o servidor
 ext     -   fechar conexão
 ###########################################################"""
 
+buffer              = 512
 EEcurrent_Directory = os.path.dirname(os.path.abspath(__file__))
 namedir_serverfiles = "files_server"
 namedir_log         = "log"

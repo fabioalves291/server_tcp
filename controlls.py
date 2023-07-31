@@ -1,6 +1,6 @@
 import datetime
 import os
-from default import utf8, namedir_clientlog, namedir_log,namedir_serverfiles
+from default import utf8, namedir_clientlog, namedir_log,namedir_serverfiles, buffer
 import models
 from models import *
 
@@ -38,7 +38,7 @@ def sendfile(namefile,connex):
         file        =   open(fr'files_server/{namefile}','rb')
         read        =   file.read()
         connex.sendall(read)
-        print(read)
+        # print(read)
         file.close()
     except FileNotFoundError:
         connex.sendall((fr">>{namefile} inistent").encode(utf8))
@@ -108,17 +108,31 @@ def queryallhistory(ip):
         file.close()
     return  strfile
 
-def sendmsgallclients(sock,data):
-    global sockets_list
-    for socket in sockets_list:
+def sendmsgallclients(sockets_list,data):
+    
+    for socket in sockets_list[1:]:
         socket.send(data.encode(utf8))
-    return 0 
+    
 
-def uploadbyclient(sock,namefile):
-    file = open(f"{namedir_serverfiles}/{namefile}","w")
-    data = sock.recv()
-    while data:
+def uploadbyclient(sock,namefile,headmsg):
+    MSGLEN = ((headmsg).split("\nlenfile\n".encode(utf8)))
+    msgf = MSGLEN[1]
+    file = open(f"{namedir_serverfiles}/{namefile}","wb")
+    file.write(msgf)
+    
+    if MSGLEN[0] == msgf:
+        data = False
+    contbuffer = msgf
+    print(len(contbuffer),len(msgf),int(MSGLEN[0]),type(MSGLEN[0]),type(contbuffer))
+    while len(contbuffer) < int(MSGLEN[0]):
+        # print(int(MSGLEN[0]) - len(contbuffer),"buffer")
+        data = sock.recv(min((int(MSGLEN[0]) - len(contbuffer)),buffer))
+        # print(data)
+        if data == b"":
+            print("finnaly erro")
+            break
+        print(len(data),"recv")
+        contbuffer = contbuffer + data
+        print(len(contbuffer))
         file.write(data)
-        data    =   clientS.recv(buffer)   
-        print(data)
     file.close()
