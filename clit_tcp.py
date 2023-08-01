@@ -21,9 +21,11 @@ def recvallmsg():
                 #print(mensage,tradTruercvmsg,"bollfile")
                 namefile = mensage[2:]
                 print(f">> Downloading {mensage[2:]}")
+                print("wait")
+                print("tente novamente")
                 filerecv        =   open(fr'client_files/{mensage[2:]}','wb')
                 data    =   clientS.recv(buffer)   
-                print(data)
+                #print(data)
                 while data:
                     try:
                         #apag
@@ -38,17 +40,26 @@ def recvallmsg():
                         # 2 versao, 1 no udp
                         break
                     data    =   clientS.recv(buffer)   
-                    print(data)
+                    # print(data)
                 print("end")
                 filerecv.close()
                 mensage = str()
         except NameError:
             pass
         except TimeoutError:
+            print(filerecv)
             filerecv.close()
             mensage = str()
             print("timed out")
             return 0 
+        else:
+            try:
+                filerecv.close()
+                mensage = str()
+                print("else err")
+            except UnboundLocalError:
+                pass
+
     while True:
         rcvfile()
         global tradTruercvmsg
