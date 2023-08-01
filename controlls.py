@@ -109,7 +109,6 @@ def queryallhistory(ip):
     return  strfile
 
 def sendmsgallclients(sockets_list,data):
-    
     for socket in sockets_list[1:]:
         socket.send(data.encode(utf8))
     

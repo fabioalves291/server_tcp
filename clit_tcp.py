@@ -69,6 +69,9 @@ def recvallmsg():
             except TimeoutError:
                 #print("timed out")
                 continue
+            else:
+                #err decohecido
+                continue 
 
 
 try:

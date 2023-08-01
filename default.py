@@ -8,6 +8,7 @@ d:      -   d: mais o nome do arquivo para donwload
 f       -   listar arquivos para download
 \h      -   help
 lh      -   seu historico de solicitação 
+l       -   listar clients no servidor
 m:      -   para enviar msg para um client do servidor  
 u:      -   enviar arquivo para o servidor
 ext     -   fechar conexão
