@@ -18,6 +18,7 @@ def recvallmsg():
         try:
             global tradTruercvmsg,mensage  
             if mensage[:2] == 'd:':
+                # trocar pelo modelo de envio do servidor de uploud
                 #print(mensage,tradTruercvmsg,"bollfile")
                 namefile = mensage[2:]
                 print(f">> Downloading {mensage[2:]}")
