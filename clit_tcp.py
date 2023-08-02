@@ -47,7 +47,8 @@ def uploadbyclient(sock,namefile,headmsg):
 def recvallmsg():
     
     while True:
-        time.sleep(0.3)
+        time.sleep(0.3) 
+        # time necessario para nao grudar o recv da funcao uploadbyclient!
         global tradTruercvmsg
         if tradTruercvmsg:
             #tradTruercvmsg = False # desativaapois receber a primeira mensagem
