@@ -37,11 +37,16 @@ def sendfile(namefile,connex):
         print(namefile)
         file        =   open(fr'files_server/{namefile}','rb')
         read        =   file.read()
+        lenfile = str(os.path.getsize(f'files_server/{namefile}'))
+        connex.sendall((f'{lenfile}\nlenfile\n').encode(utf8))
         connex.sendall(read)
         # print(read)
         file.close()
     except FileNotFoundError:
         connex.sendall((fr">>{namefile} inistent").encode(utf8))
+    except Exception as e:
+        print(e)
+        
 
 def listconn(conns):
     strlist = str()
@@ -123,7 +128,7 @@ def uploadbyclient(sock,namefile,headmsg):
         data = False
     contbuffer = msgf
     print(len(contbuffer),len(msgf),int(MSGLEN[0]),type(MSGLEN[0]),type(contbuffer))
-    while len(contbuffer) < int(MSGLEN[0]):
+    while len(contbuffer) <= int(MSGLEN[0]):
         # print(int(MSGLEN[0]) - len(contbuffer),"buffer")
         data = sock.recv(min((int(MSGLEN[0]) - len(contbuffer)),buffer))
         # print(data)

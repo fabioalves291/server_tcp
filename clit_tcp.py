@@ -12,65 +12,49 @@ utf8            = "UTF-8"
 bollConexo      = False
 buffer          = 512
 clientS.settimeout(5)
-
+def uploadbyclient(sock,namefile,headmsg):
+    try:
+        MSGLEN = ((headmsg).split("\nlenfile\n".encode(utf8)))
+        print(MSGLEN)
+        msgf = MSGLEN[1]
+        file = open(f"client_files/{namefile}","wb")
+        file.write(msgf)
+        
+        if MSGLEN[0] == msgf:
+            data = False
+        contbuffer = msgf
+        print(len(contbuffer),len(msgf),int(MSGLEN[0]),type(MSGLEN[0]),type(contbuffer))
+        while len(contbuffer) < int(MSGLEN[0]):
+            # print(int(MSGLEN[0]) - len(contbuffer),"buffer")
+            data = sock.recv(min((int(MSGLEN[0]) - len(contbuffer)),buffer))
+            # print(data)
+            if data == b"":
+                print("finnaly erro")
+                break
+            #print(len(data),"recv")
+            contbuffer = contbuffer + data
+            print(len(contbuffer))
+            file.write(data)
+        file.close()
+        print("finalziado download")
+    except IndexError:
+        file.close()
+        return 0 
+    except TimeoutError:
+        print("timeout")
+        file.close()
+        pass
 def recvallmsg():
-    def rcvfile():
-        try:
-            global tradTruercvmsg,mensage  
-            if mensage[:2] == 'd:':
-                # trocar pelo modelo de envio do servidor de uploud
-                #print(mensage,tradTruercvmsg,"bollfile")
-                namefile = mensage[2:]
-                print(f">> Downloading {mensage[2:]}")
-                print("wait")
-                print("tente novamente")
-                filerecv        =   open(fr'client_files/{mensage[2:]}','wb')
-                data    =   clientS.recv(buffer)   
-                #print(data)
-                while data:
-                    try:
-                        #apag
-                        if data.decode(utf8) == fr">>{namefile} inistent":
-                            break
-                    except UnicodeDecodeError:
-                        pass
-                    #apagar
-                    filerecv.write(data)
-                    if not mensage[:2] == 'd:':
-                        # print("diferente de d:")
-                        # 2 versao, 1 no udp
-                        break
-                    data    =   clientS.recv(buffer)   
-                    # print(data)
-                print("end")
-                filerecv.close()
-                mensage = str()
-        except NameError:
-            pass
-        except TimeoutError:
-            print(filerecv)
-            filerecv.close()
-            mensage = str()
-            print("timed out")
-            return 0 
-        else:
-            try:
-                filerecv.close()
-                mensage = str()
-                print("else err")
-            except UnboundLocalError:
-                pass
-
+    
     while True:
-        rcvfile()
+        time.sleep(0.3)
         global tradTruercvmsg
-
         if tradTruercvmsg:
             #tradTruercvmsg = False # desativaapois receber a primeira mensagem
             #desativado pois agora tem time out
             #entao vair ficar na escuta por msg e nao por arquivos 
             try:
-                #print("iniciando tred recv")
+                
                 data = clientS.recv(buffer)
                 print(data.decode(utf8))
             except ConnectionRefusedError:
@@ -111,10 +95,12 @@ try:
             if mensage =="":
                 print(">> empty input")
                 continue
-            elif mensage[:2] =="d:":
-                #time.sleep(10) error perder o buffer
+            elif mensage[:2]=="d:":
                 clientS.send((mensage).encode(utf8))
                 tradTruercvmsg = False
+                namefile = mensage[2:]
+                MSGLEN = clientS.recv(512)
+                uploadbyclient(clientS, namefile, MSGLEN)
                 continue
             elif mensage[:2]=="u:":
                 clientS.send((mensage).encode(utf8))
@@ -130,8 +116,8 @@ try:
                 clientS.send(fileread)
                 file.close()
                 print(namefile,"Envoy")
-                
                 continue
+            
             else:
                 tradTruercvmsg = True
             clientS.send((mensage).encode(utf8))
