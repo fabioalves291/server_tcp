@@ -1,4 +1,4 @@
-# programa para redes - server tcp de transferência de arquivos.
+# server tcp de transferência de arquivos.
 programa de envio de arquivo e downloud de arquivo usando socket em python
 
 o primeiro acesso deve ser em primeiro plano(para poder configurar os arquivos necessarios)
@@ -14,5 +14,5 @@ varios serves em portas diferentes mas o client so conectará de acordo com ifco
     python3 servertcp (argv) ou python servertcp (argv) ou ./servertcp (argv)
 
 
-o server antigo ele requecebia uma requisição e fechava a requisição, nao sendo uma conexões simuntaneas mas rapidas, recebia  a solicitação, enviava o arquivo e fechava a conexão para proximo cliente.
-o novo ele coloca as conexões em uma lista em passa pelpo for e ainda colocando tredding para deixar simuntaneas e com processos separados.
+O servidor anterior recebia uma solicitação, atendia-a e fechava a conexão, não permitindo conexões simultâneas, mas sendo rápidas. Ele recebia a solicitação, enviava o arquivo e fechava a conexão para o próximo cliente.
+No novo servidor, as conexões são colocadas em uma lista e percorridas através de um laço 'for', enquanto threads são utilizadas para torná-las simultâneas e com processos separados.
