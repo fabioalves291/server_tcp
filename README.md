@@ -1,10 +1,10 @@
-# server tcp de transferência de arquivos.
-programa de envio de arquivo e downloud de arquivo usando socket em python
+# servidor de transferência de arquivos.
 
-o primeiro acesso deve ser em primeiro plano(para poder configurar os arquivos necessarios)
+Programa de envio e download de arquivos utilizando sockets em Python, criado para práticas de **Programação de Redes de Computadores.**
 
-se o servidor tentar abrir e a porta estiver ainda sendo usada o app vai criar outro ifconfig, isso acaba resultando na possibilidade de criar
-varios serves em portas diferentes mas o client so conectará de acordo com ifconfig que foi atualizado.
+O primeiro acesso deve ser em primeiro plano, permitindo a configuração dos arquivos necessários.
+
+Se o servidor tentar abrir uma porta que ainda está em uso, o aplicativo irá criar outro socket, resultando na possibilidade de criar vários servidores em portas diferentes. No entanto, o cliente só se conectará de acordo com o socket que foi atualizado no ifconfig.
 
 #### !No cmd do windows use
 
